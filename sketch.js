@@ -49,7 +49,6 @@ function setup() {
 		brotShown = true;
 		counterPlayer = 0;
 		runPlayer = true
-		frameRate(24);
 	});
 	button4.hide();
 	button3 = createButton('stop zoom');
