@@ -6,7 +6,7 @@ The Mandelbrot fractal is a mathematically generated psychedelic image that rese
 
 ## Wan't to try yourself?
 To do that, you can download the repo and run a local http-server pointing to the directory you saved in. You will need internet connection, since the p5 library is remotely added from cloudflare-cdn. I have no plan to make this available otherwise.
-Alternatively you can copy and paste the code from the js file to the p5 Web Editor. That option is much slower but also possible.
+Alternatively you can copy and paste the code from the js file to the p5 Web Editor. That option is much slower when executing, but also possible.
 
 ## Limitations
 I played around with different values for resolution, max itertations and zoom speed, but the maximum possible slider values were a good balance for my Computer (Macbook Pro M1, Chrome-based Browser). If there is any need to change something, the variables are located at the very top. Also 800x600 seems to be a good balance in terms of beauty and speed, but any other size works too. 
