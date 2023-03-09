@@ -60,6 +60,7 @@ function setup() {
 		button3.hide();
 		button2.show();
 		mrEnabled = false;
+		button4.show();
 	});
 	button2 = createButton('start zoom');
 	button2.position(w + 50, 300);
@@ -71,6 +72,7 @@ function setup() {
 		button3.show();
 		mrEnabled = true;
 		button5.hide();
+		button4.hide();
 	});
 	button5 = createButton('take step!');
 	button5.position(w + 50, 400);
@@ -83,10 +85,10 @@ function setup() {
 	zoomSpeedSlider = createSlider(0, 0.5, zoomSpeed, 0.01);
 	zoomSpeedSlider.position(w + 175, 85);
 	zoomSpeedSlider.hide();
-	maxIterationSlider = createSlider(1, 200, maxZoomLevel, 1);
+	maxIterationSlider = createSlider(1, 250, maxZoomLevel, 1);
 	maxIterationSlider.position(w + 175, 50);
 	maxIterationSlider.hide();
-	resolutionSlider = createSlider(10, 2000, resolution, 10);
+	resolutionSlider = createSlider(10, 3000, resolution, 10);
 	resolutionSlider.position(w + 175, 66);
 	resolutionSlider.hide();
 	infoDiv = createDiv('Dimensions: ' + w + 'x' + h +
@@ -99,8 +101,8 @@ function setup() {
 function draw() {
 	// Multiscale Rendering resolution increase while running 
 	if (mrEnabled) {
-		if (runGenerator) {
-			resolution = Math.floor(resolution * 1.03);
+		if (runGenerator && resolution < 3000) {
+			resolution = Math.floor(resolution * 1.015);
 			resolutionSlider.value(resolution);
 		}
 	} else {
