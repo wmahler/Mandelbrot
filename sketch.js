@@ -80,7 +80,7 @@ function setup() {
 		runGenerator = true;
 	});
 	button5.hide();
-	zoomSpeedSlider = createSlider(0, 1, zoomSpeed, 0.01);
+	zoomSpeedSlider = createSlider(0, 0.5, zoomSpeed, 0.01);
 	zoomSpeedSlider.position(w + 175, 85);
 	zoomSpeedSlider.hide();
 	maxIterationSlider = createSlider(1, 200, maxZoomLevel, 1);
