@@ -42,14 +42,14 @@ function setup() {
 		button2.show();
 		button3.show();
 	});
-	button2 = createButton('start zoom');
-	button2.position(w + 50, 250);
-	button2.hide();
-	button2.mousePressed(() => { maxZoomLevel = maxIterationSlider.value(); runGenerator = true; });
 	button3 = createButton('stop zoom');
 	button3.hide();
 	button3.position(w + 50, 300);
-	button3.mousePressed(() => { runGenerator = false; });
+	button3.mousePressed(() => { runGenerator = false; button3.hide(); button2.show() });
+	button2 = createButton('start zoom');
+	button2.position(w + 50, 300);
+	button2.hide();
+	button2.mousePressed(() => { maxZoomLevel = maxIterationSlider.value(); runGenerator = true; button2.hide(); button3.show() });
 	zoomSpeedSlider = createSlider(0, 1, zoomSpeed, 0.01);
 	zoomSpeedSlider.position(w + 175, 85);
 	zoomSpeedSlider.hide();
@@ -220,6 +220,8 @@ function draw() {
 	infoDiv.html('Dimensions: ' + w + 'x' + h + '<br>Iteration: ' + zoomLevel + '/' + maxZoomLevel + '<br>Resolution: ' + resolution + '<br>ZoomSpeed: ' + zoomSpeed);
 	// Switch to playmode
 	if (zoomLevel == maxZoomLevel && zoomLevel != 1) {
+		button3.hide();
+		button2.show();
 		if (!brotShown) {
 			button = createButton('play the animation!');
 			button.position(w+50, 350);
