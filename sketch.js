@@ -18,6 +18,7 @@ let infoDiv;
 let zoomSpeedSlider, maxIterationSlider, resolutionSlider;
 
 function setup() {
+	// setting up p5
 	createCanvas(800, 600);
 	pixelDensity(1);
 	colorMode(HSB, 360, 100, 100, 255);
@@ -26,6 +27,7 @@ function setup() {
 	context.imageSmoothingEnabled = true;
 	context.imageSmoothingQuality = 'high';
 	context.canvas.willReadFrequently = true;
+	// creating user interface
 	button1 = createButton('generate mandelbrot');
 	button1.position(width / 2, height / 2);
 	button1.mousePressed(() => {
