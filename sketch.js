@@ -19,9 +19,6 @@ let brotShown = false;
 let mrEnabled = false;
 let infoDiv;
 let zoomSpeedSlider, maxIterationSlider, resolutionSlider;
-let savedBrightestX = 0;
-let savedBrightestY = 0;
-let button5;
 
 function setup() {
 	createCanvas(w, h);
@@ -55,22 +52,22 @@ function setup() {
 	button3 = createButton('stop zoom');
 	button3.hide();
 	button3.position(w + 50, 300);
-	button3.mousePressed(() => { 
-		runGenerator = false; 
-		button3.hide(); 
-		button2.show(); 
-		mrEnabled = false; 
+	button3.mousePressed(() => {
+		runGenerator = false;
+		button3.hide();
+		button2.show();
+		mrEnabled = false;
 	});
 	button2 = createButton('start zoom');
 	button2.position(w + 50, 300);
 	button2.hide();
-	button2.mousePressed(() => { 
-		maxZoomLevel = maxIterationSlider.value(); 
-		runGenerator = true; 
-		button2.hide(); 
-		button3.show(); 
-		mrEnabled = true; 
-		button5.hide(); 
+	button2.mousePressed(() => {
+		maxZoomLevel = maxIterationSlider.value();
+		runGenerator = true;
+		button2.hide();
+		button3.show();
+		mrEnabled = true;
+		button5.hide();
 	});
 	button5 = createButton('take step!');
 	button5.position(w + 50, 400);
@@ -89,18 +86,18 @@ function setup() {
 	resolutionSlider = createSlider(10, 2000, resolution, 10);
 	resolutionSlider.position(w + 175, 66);
 	resolutionSlider.hide();
-	infoDiv = createDiv('Dimensions: ' + w + 'x' + h + 
-						'<br>Iteration: ' + zoomLevel + '/' + maxZoomLevel + 
-						'<br>Resolution: ' + resolution + 
-						'<br>ZoomSpeed: ' + zoomSpeed);
+	infoDiv = createDiv('Dimensions: ' + w + 'x' + h +
+		'<br>Iteration: ' + zoomLevel + '/' + maxZoomLevel +
+		'<br>Resolution: ' + resolution +
+		'<br>ZoomSpeed: ' + zoomSpeed);
 	infoDiv.position(w + 20, 30);
 }
 
 function draw() {
 	// Multiscale Rendering resolution increase while running 
 	if (mrEnabled) {
-		if (zoomLevel % 1 == 0 && runGenerator) {
-			resolution = Math.floor(resolution * 1.05);
+		if (runGenerator) {
+			resolution = Math.floor(resolution * 1.03);
 			resolutionSlider.value(resolution);
 		}
 	} else {
@@ -118,22 +115,15 @@ function draw() {
 		let brightestX = 0;
 		let brightestY = 0;
 		let brightest = 0;
-		if (zoomLevel % 3 == 0 || zoomLevel < 5) {
-			for (let i = 0; i < pixels.length; i += 4) {
-				let x = (i / 4) % width;
-				let y = Math.floor((i / 4) / width);
-				let b = pixels[i + 2];
-				if (b > brightest) {
-					brightest = b;
-					brightestX = x;
-					brightestY = y;
-				}
+		for (let i = 0; i < pixels.length; i += 4) {
+			let x = (i / 4) % width;
+			let y = Math.floor((i / 4) / width);
+			let b = pixels[i + 2];
+			if (b > brightest) {
+				brightest = b;
+				brightestX = x;
+				brightestY = y;
 			}
-			savedBrightestX = brightestX;
-			savedBrightestY = brightestY;
-		} else {
-			brightestX = savedBrightestX;
-			brightestY = savedBrightestY;
 		}
 		let cx = map(brightestX, 0, width, xmin, xmax);
 		let cy = map(brightestY, 0, height, ymin, ymax);
@@ -259,10 +249,10 @@ function draw() {
 	maxZoomLevel = maxIterationSlider.value();
 	zoomSpeed = zoomSpeedSlider.value();
 	// display info
-	infoDiv.html('Dimensions: ' + w + 'x' + h + 
-				 '<br>Iteration: ' + zoomLevel + '/' + maxZoomLevel + 
-				 '<br>Resolution: ' + resolution + 
-				 '<br>ZoomSpeed: ' + zoomSpeed);
+	infoDiv.html('Dimensions: ' + w + 'x' + h +
+		'<br>Iteration: ' + zoomLevel + '/' + maxZoomLevel +
+		'<br>Resolution: ' + resolution +
+		'<br>ZoomSpeed: ' + zoomSpeed);
 	// Switch to playmode
 	if (zoomLevel == maxZoomLevel) {
 		if (zoomLevel != 1) {
