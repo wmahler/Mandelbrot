@@ -1,4 +1,7 @@
-// TODO Exploration
+/* TODO 
+Exploration
+bring to plain js
+*/
 const w = 800;
 const h = 600;
 let resolution = 150;
