@@ -1,10 +1,8 @@
-// TODO Resolution Slider + Refresh first generate with new resolution + Exploration
+// TODO Exploration
 const w = 800;
 const h = 600;
-const mrIncrease = 28;
-let resolution = 50;
+let resolution = 150;
 let zoomSpeed = 0.15;
-
 let maxZoomLevel = 1;
 let palette;
 let xmin = -2.5;
@@ -18,10 +16,12 @@ let runGenerator = false;
 let counterPlayer = 0;
 let runPlayer = false;
 let brotShown = false;
+let mrEnabled = false;
 let infoDiv;
 let zoomSpeedSlider, maxIterationSlider, resolutionSlider;
 let savedBrightestX = 0;
 let savedBrightestY = 0;
+let button5;
 
 function setup() {
 	createCanvas(w, h);
@@ -43,14 +43,43 @@ function setup() {
 		button2.show();
 		button3.show();
 	});
+	button4 = createButton('play the animation!');
+	button4.position(w + 50, 350);
+	button4.mousePressed(() => {
+		brotShown = true;
+		counterPlayer = 0;
+		runPlayer = true
+		frameRate(24);
+	});
+	button4.hide();
 	button3 = createButton('stop zoom');
 	button3.hide();
 	button3.position(w + 50, 300);
-	button3.mousePressed(() => { runGenerator = false; button3.hide(); button2.show() });
+	button3.mousePressed(() => { 
+		runGenerator = false; 
+		button3.hide(); 
+		button2.show(); 
+		mrEnabled = false; 
+	});
 	button2 = createButton('start zoom');
 	button2.position(w + 50, 300);
 	button2.hide();
-	button2.mousePressed(() => { maxZoomLevel = maxIterationSlider.value(); runGenerator = true; button2.hide(); button3.show() });
+	button2.mousePressed(() => { 
+		maxZoomLevel = maxIterationSlider.value(); 
+		runGenerator = true; 
+		button2.hide(); 
+		button3.show(); 
+		mrEnabled = true; 
+		button5.hide(); 
+	});
+	button5 = createButton('take step!');
+	button5.position(w + 50, 400);
+	button5.mousePressed(() => {
+		maxZoomLevel = 1;
+		zoomLevel = 0;
+		runGenerator = true;
+	});
+	button5.hide();
 	zoomSpeedSlider = createSlider(0, 1, zoomSpeed, 0.01);
 	zoomSpeedSlider.position(w + 175, 85);
 	zoomSpeedSlider.hide();
@@ -58,13 +87,25 @@ function setup() {
 	maxIterationSlider.position(w + 175, 50);
 	maxIterationSlider.hide();
 	resolutionSlider = createSlider(10, 2000, resolution, 10);
-	resolutionSlider.position(w + 175, 62);
+	resolutionSlider.position(w + 175, 66);
 	resolutionSlider.hide();
-	infoDiv = createDiv('Dimensions: ' + w + 'x' + h + '<br>Iteration: ' + zoomLevel + '/' + maxZoomLevel + '<br>Resolution: ' + resolution + '<br>ZoomSpeed: ' + zoomSpeed);
+	infoDiv = createDiv('Dimensions: ' + w + 'x' + h + 
+						'<br>Iteration: ' + zoomLevel + '/' + maxZoomLevel + 
+						'<br>Resolution: ' + resolution + 
+						'<br>ZoomSpeed: ' + zoomSpeed);
 	infoDiv.position(w + 20, 30);
 }
 
 function draw() {
+	// Multiscale Rendering resolution increase while running 
+	if (mrEnabled) {
+		if (zoomLevel % 1 == 0 && runGenerator) {
+			resolution = Math.floor(resolution * 1.05);
+			resolutionSlider.value(resolution);
+		}
+	} else {
+		resolution = resolutionSlider.value();
+	}
 	if (runGenerator) {
 		// return if maxZoomLevel is reached
 		if (zoomLevel >= maxZoomLevel) {
@@ -195,10 +236,7 @@ function draw() {
 		ymin = lerp(ymin, targetYmin, zoomSpeed);
 		xmax = lerp(xmax, targetXmax, zoomSpeed);
 		ymax = lerp(ymax, targetYmax, zoomSpeed);
-		// Multiscale Rendering resolution increase, modulo 1 = every iteration
-		if (zoomLevel % 1 == 0) {
-			resolution += mrIncrease;
-		}
+
 	} else if (runPlayer) {
 		loadPixels();
 		for (let y = 0; y < height; y++) {
@@ -220,23 +258,25 @@ function draw() {
 	// set slider values
 	maxZoomLevel = maxIterationSlider.value();
 	zoomSpeed = zoomSpeedSlider.value();
-	resolution = resolutionSlider.value();
 	// display info
-	infoDiv.html('Dimensions: ' + w + 'x' + h + '<br>Iteration: ' + zoomLevel + '/' + maxZoomLevel + '<br>Resolution: ' + resolution + '<br>ZoomSpeed: ' + zoomSpeed);
+	infoDiv.html('Dimensions: ' + w + 'x' + h + 
+				 '<br>Iteration: ' + zoomLevel + '/' + maxZoomLevel + 
+				 '<br>Resolution: ' + resolution + 
+				 '<br>ZoomSpeed: ' + zoomSpeed);
 	// Switch to playmode
-	if (zoomLevel == maxZoomLevel && zoomLevel != 1) {
-		// switch start/stop buttons
-		button3.hide();
-		button2.show();
-		if (!brotShown) {
-			button = createButton('play the animation!');
-			button.position(w+50, 350);
-			button.mousePressed(() => {
-				brotShown = true;
-				counterPlayer = 0;
-				runPlayer = true
-				frameRate(24);
-			});
+	if (zoomLevel == maxZoomLevel) {
+		if (zoomLevel != 1) {
+			// switch start/stop buttons
+			button3.hide();
+			button2.show();
+			// show play animation button
+			if (!brotShown) {
+				button4.show();
+			}
+		} else {
+			// show next iteration button
+			button5.show();
 		}
+
 	}
 }
