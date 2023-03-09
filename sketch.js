@@ -1,4 +1,4 @@
-// TODO Start/Stop Zusammenfassen + Resolution Slider + Refresh first generate with new resolution + Exploration
+// TODO Resolution Slider + Refresh first generate with new resolution + Exploration
 const w = 800;
 const h = 600;
 const mrIncrease = 28;
@@ -19,7 +19,7 @@ let counterPlayer = 0;
 let runPlayer = false;
 let brotShown = false;
 let infoDiv;
-let zoomSpeedSlider, maxIterationSlider;
+let zoomSpeedSlider, maxIterationSlider, resolutionSlider;
 let savedBrightestX = 0;
 let savedBrightestY = 0;
 
@@ -33,12 +33,13 @@ function setup() {
 	context.imageSmoothingQuality = 'high';
 	context.canvas.willReadFrequently = true;
 	button1 = createButton('generate mandelbrot');
-	button1.position(30, 250);
+	button1.position(w / 2, h / 2);
 	button1.mousePressed(() => {
 		runGenerator = true;
 		button1.hide();
 		maxIterationSlider.show();
 		zoomSpeedSlider.show();
+		resolutionSlider.show();
 		button2.show();
 		button3.show();
 	});
@@ -53,9 +54,12 @@ function setup() {
 	zoomSpeedSlider = createSlider(0, 1, zoomSpeed, 0.01);
 	zoomSpeedSlider.position(w + 175, 85);
 	zoomSpeedSlider.hide();
-	maxIterationSlider = createSlider(1, 200, maxZoomLevel);
+	maxIterationSlider = createSlider(1, 200, maxZoomLevel, 1);
 	maxIterationSlider.position(w + 175, 50);
 	maxIterationSlider.hide();
+	resolutionSlider = createSlider(10, 2000, resolution, 10);
+	resolutionSlider.position(w + 175, 62);
+	resolutionSlider.hide();
 	infoDiv = createDiv('Dimensions: ' + w + 'x' + h + '<br>Iteration: ' + zoomLevel + '/' + maxZoomLevel + '<br>Resolution: ' + resolution + '<br>ZoomSpeed: ' + zoomSpeed);
 	infoDiv.position(w + 20, 30);
 }
@@ -216,10 +220,12 @@ function draw() {
 	// set slider values
 	maxZoomLevel = maxIterationSlider.value();
 	zoomSpeed = zoomSpeedSlider.value();
+	resolution = resolutionSlider.value();
 	// display info
 	infoDiv.html('Dimensions: ' + w + 'x' + h + '<br>Iteration: ' + zoomLevel + '/' + maxZoomLevel + '<br>Resolution: ' + resolution + '<br>ZoomSpeed: ' + zoomSpeed);
 	// Switch to playmode
 	if (zoomLevel == maxZoomLevel && zoomLevel != 1) {
+		// switch start/stop buttons
 		button3.hide();
 		button2.show();
 		if (!brotShown) {
