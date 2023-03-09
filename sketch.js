@@ -1,4 +1,4 @@
-// TODO Start/Stop Zusammenfassen + Resolution Slider + Refresh first generate with new resolution
+// TODO Start/Stop Zusammenfassen + Resolution Slider + Refresh first generate with new resolution + Exploration
 const w = 800;
 const h = 600;
 const mrIncrease = 28;
@@ -18,7 +18,6 @@ let runGenerator = false;
 let counterPlayer = 0;
 let runPlayer = false;
 let brotShown = false;
-let showRefreshButton = true;
 let infoDiv;
 let zoomSpeedSlider, maxIterationSlider;
 let savedBrightestX = 0;
@@ -67,15 +66,6 @@ function draw() {
 		if (zoomLevel >= maxZoomLevel) {
 			runGenerator = false;
 			return;
-		}
-		// show reload button
-		if (showRefreshButton) {
-			showRefreshButton = false;
-			button = createButton('reload page...');
-			button.position(300, height + 30);
-			button.mousePressed(() => {
-				window.location.reload();
-			});
 		}
 		// get pixels array
 		loadPixels();
@@ -231,8 +221,8 @@ function draw() {
 	// Switch to playmode
 	if (zoomLevel == maxZoomLevel && zoomLevel != 1) {
 		if (!brotShown) {
-			button = createButton('play the mandelbrot animation!');
-			button.position(30, height + 30);
+			button = createButton('play the animation!');
+			button.position(w+50, 350);
 			button.mousePressed(() => {
 				brotShown = true;
 				counterPlayer = 0;
