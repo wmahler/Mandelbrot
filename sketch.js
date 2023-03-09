@@ -1,5 +1,3 @@
-const w = 800;
-const h = 600;
 let resolution = 150;
 let zoomSpeed = 0.15;
 let maxZoomLevel = 1;
@@ -8,11 +6,11 @@ let xmin = -2.5;
 let ymin = -2.5;
 let xmax = 2.5;
 let ymax = 2.5;
-let zoomLevel = 0;
 let targetXmin, targetYmin, targetXmax, targetYmax;
+let zoomLevel = 0;
+let counterPlayer = 0;
 let allSets = new Array();
 let runGenerator = false;
-let counterPlayer = 0;
 let runPlayer = false;
 let brotShown = false;
 let mrEnabled = false;
@@ -20,7 +18,7 @@ let infoDiv;
 let zoomSpeedSlider, maxIterationSlider, resolutionSlider;
 
 function setup() {
-	createCanvas(w, h);
+	createCanvas(800, 600);
 	pixelDensity(1);
 	colorMode(HSB, 360, 100, 100, 255);
 	palette = [color(12, 219, 191), color(208, 255, 12), color(255, 66, 66), color(255, 147, 41), color(232, 0, 255), color(179, 0, 255), color(12, 255, 235), color(255, 0, 221), color(255, 255, 255), color(38, 38, 38)];
@@ -29,7 +27,7 @@ function setup() {
 	context.imageSmoothingQuality = 'high';
 	context.canvas.willReadFrequently = true;
 	button1 = createButton('generate mandelbrot');
-	button1.position(w / 2, h / 2);
+	button1.position(width / 2, height / 2);
 	button1.mousePressed(() => {
 		runGenerator = true;
 		button1.hide();
@@ -40,7 +38,7 @@ function setup() {
 		button3.show();
 	});
 	button4 = createButton('play the animation!');
-	button4.position(w + 50, 350);
+	button4.position(width + 50, 350);
 	button4.mousePressed(() => {
 		brotShown = true;
 		counterPlayer = 0;
@@ -50,7 +48,7 @@ function setup() {
 	button4.hide();
 	button3 = createButton('stop zoom');
 	button3.hide();
-	button3.position(w + 50, 300);
+	button3.position(width + 50, 300);
 	button3.mousePressed(() => {
 		runGenerator = false;
 		button3.hide();
@@ -59,7 +57,7 @@ function setup() {
 		button4.show();
 	});
 	button2 = createButton('start zoom');
-	button2.position(w + 50, 300);
+	button2.position(width + 50, 300);
 	button2.hide();
 	button2.mousePressed(() => {
 		maxZoomLevel = maxIterationSlider.value();
@@ -71,7 +69,7 @@ function setup() {
 		button4.hide();
 	});
 	button5 = createButton('take step!');
-	button5.position(w + 50, 400);
+	button5.position(width + 50, 400);
 	button5.mousePressed(() => {
 		maxZoomLevel = 1;
 		zoomLevel = 0;
@@ -79,19 +77,19 @@ function setup() {
 	});
 	button5.hide();
 	zoomSpeedSlider = createSlider(0, 0.5, zoomSpeed, 0.01);
-	zoomSpeedSlider.position(w + 175, 85);
+	zoomSpeedSlider.position(width + 175, 85);
 	zoomSpeedSlider.hide();
 	maxIterationSlider = createSlider(1, 250, maxZoomLevel, 1);
-	maxIterationSlider.position(w + 175, 50);
+	maxIterationSlider.position(width + 175, 50);
 	maxIterationSlider.hide();
 	resolutionSlider = createSlider(10, 3000, resolution, 10);
-	resolutionSlider.position(w + 175, 66);
+	resolutionSlider.position(width + 175, 66);
 	resolutionSlider.hide();
-	infoDiv = createDiv('Dimensions: ' + w + 'x' + h +
+	infoDiv = createDiv('Dimensions: ' + width + 'x' + height +
 		'<br>Iteration: ' + zoomLevel + '/' + maxZoomLevel +
 		'<br>Resolution: ' + resolution +
 		'<br>ZoomSpeed: ' + zoomSpeed);
-	infoDiv.position(w + 20, 30);
+	infoDiv.position(width + 20, 30);
 }
 
 function draw() {
@@ -135,9 +133,9 @@ function draw() {
 		targetXmax = cx + newWidth / 2;
 		targetYmax = cy + newHeight / 2;
 		// create Arrays for next Mandelbrot
-		let ca = new Array(w);
-		let cb = new Array(h);
-		let data = new Array(w * h);
+		let ca = new Array(width);
+		let cb = new Array(height);
+		let data = new Array(width * height);
 		// map x and y to the new min and max
 		for (let x = 0; x < width; x++) {
 			ca[x] = map(x, 0, width, xmin, xmax);
@@ -249,7 +247,7 @@ function draw() {
 	maxZoomLevel = maxIterationSlider.value();
 	zoomSpeed = zoomSpeedSlider.value();
 	// display info
-	infoDiv.html('Dimensions: ' + w + 'x' + h +
+	infoDiv.html('Dimensions: ' + width + 'x' + height +
 		'<br>Iteration: ' + zoomLevel + '/' + maxZoomLevel +
 		'<br>Resolution: ' + resolution +
 		'<br>ZoomSpeed: ' + zoomSpeed);
