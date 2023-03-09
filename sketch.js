@@ -1,7 +1,3 @@
-/* TODO 
-Exploration
-bring to plain js
-*/
 const w = 800;
 const h = 600;
 let resolution = 150;
@@ -49,6 +45,7 @@ function setup() {
 		brotShown = true;
 		counterPlayer = 0;
 		runPlayer = true
+		frameRate(40);
 	});
 	button4.hide();
 	button3 = createButton('stop zoom');
@@ -230,7 +227,6 @@ function draw() {
 		ymin = lerp(ymin, targetYmin, zoomSpeed);
 		xmax = lerp(xmax, targetXmax, zoomSpeed);
 		ymax = lerp(ymax, targetYmax, zoomSpeed);
-
 	} else if (runPlayer) {
 		loadPixels();
 		for (let y = 0; y < height; y++) {
@@ -271,6 +267,5 @@ function draw() {
 			// show next iteration button
 			button5.show();
 		}
-
 	}
 }
