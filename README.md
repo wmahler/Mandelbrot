@@ -4,8 +4,6 @@ The Mandelbrot fractal is a mathematically generated psychedelic image that rese
 
 ![example1](screenshots/screenshot1.png)
 
-![example1](screenshots/screenshot2.png)
-
 ## Wan't to try yourself?
 To do that, you can download the repo and run a local http-server pointing to the directory you saved in. I have no plan to make this available otherwise.
 
@@ -14,6 +12,8 @@ I played around with different values for resolution, max itertaions and zoom sp
 
 ## Technical details
 The code is pretty straight forward and relies completely on the p5 library, the whole logic is in the draw() function and all the buttons, text, etc... is defined in the setup() function. The zooming-in proccess is implemented by serching for the brightest pixel and then zooming in on it. This proccess is repeated every frame and i had to do some color correction to make it work. I also tried implementing other, more sophisticated, methods like adaptive/grid-based sampling or dividing the image before searching, but none of them was as good for me as the searching by brightest pixel method that i went for in the first place. The "play animation" functionality is implemented by storing all calculated frames, in the form of pixel arrays, in one big array, this get's then just displayed.
+
+![example2](screenshots/screenshot2.png)
 
 ### Sidenotes
 The base for this code was written by ChatGPT, it was really helpful to lay out a base to work from. But sadly the longer the conversation was ongoing the more useless ChatGPT got. Also this Code relies completely on the p5 library from processing, without it this project would be way more complicated. I went this route for simplicty's sake but if i were to do something like this again, i would go a more graphic-natice route, like GLSL. But it was nice to see JS handle this graphics. I obviously know that my code is pretty messy, but as i said, JS was probably never the best option for the task and if i dump more time into fractal generation i would not opt for the browser as platform.
